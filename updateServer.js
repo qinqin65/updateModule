@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var timeout = 20000;//超时
 var listenPort = 12008;//监听端口
-var ver = 'Beta2.5';
+var ver = 'Beta2.6';
 var verInfo = '1、修复基本bug;2、改进程序稳定性;3、add update module';
 //var updLis = '../binVerify.jar;../config.cfg;update.py';
 var updLis = '../binVerify.jar;../config.cfg';
@@ -86,7 +86,8 @@ server.on("error",function(exception) {
 
 function sendFile(file,sock) {
   if(file!=null) {
-    sock.write(Math.ceil(file.length/1024)+'');
+    //sock.write(Math.ceil(file.length/1024)+'');
+	sock.write(file.length+'');
     for(var i=0,j=0;i<Math.ceil(file.length/1024);i++,j+=1024) {
       sock.write(file.slice(j,j+1024));
 	}
