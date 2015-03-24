@@ -6,7 +6,7 @@ import os
 import math
 #import time
 
-IP = '192.168.0.101'
+IP = 'localhost'
 PORT = 12008
 
 class Sock:
@@ -42,14 +42,13 @@ def update(fileName):
     try:
         f = open(fileName+'.tmp','wb')
         mySock.sock.send('get:'+fileName.lstrip('../'))
-        size = mySock.sock.recv(1024)
+        size = int(mySock.sock.recv(1024))
         recSize = 0
-        #for i in range(int(math.ceil(float(size)))):
-        for i in range(int(size)):
+        while(recSize!=size):
             data = mySock.sock.recv(1024)
             f.write(data)
-            print 'recived data:',len(data)
-            recSize+=1
+            recSize += len(data)
+            #print 'recived data:',len(data),'&recSize:',recSize,'&size:',size
         print fileName+' size:'+str(size)+'KB','recv size:'+str(recSize)+'KB'
     except Exception,e:
         print e
@@ -112,7 +111,7 @@ def mergeCfg():
         f.close
 
 def commit(fileName):
-    if(fileName=='config.cfg'):
+    if(fileName=='../config.cfg'):
         mergeCfg()
     if os.path.exists(fileName):
         os.remove(fileName)
